@@ -39,9 +39,9 @@ namespace SearchAlgorithmsLib
         }
         public void printSolution()
         {
-            Console.WriteLine(this.numberOfStepst);
+         //   Console.WriteLine(this.numberOfStepst);
             Console.WriteLine(this.numberOfStepsCalculate);
-            /* foreach (State<T> i in this.solutionList)
+            /*foreach (State<T> i in this.solutionList)
              {
                  Console.WriteLine(i.ToString());
              }*/

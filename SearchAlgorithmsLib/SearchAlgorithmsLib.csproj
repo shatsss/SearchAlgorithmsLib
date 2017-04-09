@@ -30,6 +30,12 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Academy.Collections, Version=2.1.0.45, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\..\Ass1\packages\Academy.Collections.2.1.0.0\lib\net45\Academy.Collections.dll</HintPath>
+    </Reference>
+    <Reference Include="Academy.Numerics, Version=2.0.550.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\..\Ass1\packages\Academy.Numerics.2.0.550.0\lib\net45\Academy.Numerics.dll</HintPath>
+    </Reference>
     <Reference Include="Priority Queue, Version=4.0.3.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\OptimizedPriorityQueue.4.0.4\lib\net45\Priority Queue.dll</HintPath>
     </Reference>

@@ -1,23 +1,23 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using Priority_Queue;
-using SearchAlgorithmsLib;
+using Academy.Collections.Generic;
 
 namespace SearchAlgorithmsLib
 {
     public abstract class PrioritySearcher<T> : ISearcher<T>
     {
-        private SimplePriorityQueue<State<T>> openList;
+        private PriorityQueue<State<T>> openList;
         private int evaluatedNodes;
-        public PrioritySearcher()
+
+        public PrioritySearcher(IComparer<State<T>> comparer)
         {
-            openList = new SimplePriorityQueue<State<T>>();
+            openList = new PriorityQueue<State<T>>(new List<State<T>>(), comparer);
             evaluatedNodes = 0;
         }
         public void addToOpenList(State<T> state)
         {
-            openList.Enqueue(state, (float)state.Cost);
+            openList.Enqueue(state);
         }
         protected State<T> popOpenList()
         {
@@ -47,9 +47,35 @@ namespace SearchAlgorithmsLib
         {
             return evaluatedNodes;
         }
-        public void updateItem(State<T> state, float coast)
+        /*public void updateItem(State<T> state, float coast)
         {
             this.openList.UpdatePriority(state, coast);
+        }*/
+        public void updateItem(State<T> newState)
+        {
+            List<State<T>> poppedStates = new List<State<T>>();
+            State<T> poppedState = openList.Dequeue();
+
+            // Pop all the states until you reach the state we wish to update.
+            while (OpenListSize != 0 && openList.Peek() != newState)
+            {
+                poppedStates.Add(openList.Dequeue());
+            }
+
+            // If the new state's cost is actually lower than the old one's.
+            if (openList.Peek().Cost > newState.Cost)
+            {
+                // Dequeue the state with the old cost 
+                // and enqueue the state with the new cost.
+                openList.Dequeue();
+                openList.Enqueue(newState);
+            }
+
+            // Re-enqueue the popped states
+            foreach (State<T> s in poppedStates)
+            {
+                openList.Enqueue(s);
+            }
         }
         public abstract Solution<T> search(ISearchable<T> searchable);
 

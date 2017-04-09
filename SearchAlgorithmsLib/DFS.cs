@@ -40,7 +40,10 @@ namespace SearchAlgorithmsLib
                 foreach (State<T> i in succerssors)
                 {
                     if (!hashSet.Contains(i))
+                    {
                         addToOpenList(i);
+                        i.Parent = state;
+                    }
                 }
             }
             return null;

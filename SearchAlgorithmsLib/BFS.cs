@@ -9,12 +9,14 @@ namespace SearchAlgorithmsLib
 {
     public class BFS<T> : PrioritySearcher<T>
     {
-        private Solution<T> backTrace(State<T> state)
+        public BFS() : base(State<T>.GetDefaultCostComparer()) { }
+        public BFS(IComparer<State<T>> comparer) : base(comparer) { }
+        private Solution<T> backTrace(State<T> state, State<T> end)
         {
             Stack<State<T>> openStack = new Stack<State<T>>();
             List<State<T>> openList = new List<State<T>>();
             openStack.Push(state);
-            while ((state = state.Parent) != null)
+            while ((state = state.Parent) != null && state != end)
             {
                 openStack.Push(state);
             }
@@ -33,14 +35,15 @@ namespace SearchAlgorithmsLib
                 State<T> n = popOpenList(); // inherited from Searcher, removes the best state
                 closed.Add(n);
                 if (n.Equals(searchable.getGoalState()))
-                    return backTrace(n); // private method, back traces through the parents
-                                         // calling the delegated method, returns a list of states with n as a parent
+                    return backTrace(n, searchable.getInitialState()); // private method, back traces through the parents
+                                                                       // calling the delegated method, returns a list of states with n as a parent
                 List<State<T>> succerssors = searchable.getAllPossibleStates(n);
                 foreach (State<T> s in succerssors)
                 {
                     if (!closed.Contains(s) && !openContains(s))
                     {
                         addToOpenList(s);
+                        s.Parent = n;
                     }
                     else
                     {
@@ -51,10 +54,12 @@ namespace SearchAlgorithmsLib
                             if (!openContains(s))
                             {
                                 addToOpenList(s);
+                                s.Parent = n;
                             }
                             else
                             {
-                                updateItem(s, newDiraction);
+                                updateItem(s);
+                                s.Parent = n;
                             }
                         }
 
