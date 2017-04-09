@@ -20,7 +20,6 @@ namespace SearchAlgorithmsLib
         public override int GetHashCode()
         {
             return String.Intern(state.ToString()).GetHashCode();
-            //return state.ToString().GetHashCode();
         }
 
         public bool Equals(State<T> s) // we overload Object's Equals method
@@ -102,7 +101,6 @@ namespace SearchAlgorithmsLib
             {
                 if (!pool.ContainsKey(item))
                 {
-
                     pool.Add(item, new State<T>(item));
                 }
                 return pool[item];
