@@ -5,20 +5,32 @@ using Priority_Queue;
 
 namespace SearchAlgorithmsLib
 {
+    /*
+     * abstract class implement ISearcher.
+     */
     public abstract class StackSearcher<T> : ISearcher<T>
     {
         private Stack<State<T>> openList;
         private int evaluatedNodes;
+        /*
+         * c-tor of StackSearcher.
+         */
         public StackSearcher()
         {
             openList = new Stack<State<T>>();
             evaluatedNodes = 0;
         }
-        public void addToOpenList(State<T> state)
+        /*
+         * add method.
+         */
+        public void AddToOpenList(State<T> state)
         {
             openList.Push(state);
         }
-        public bool isEmpty()
+        /*
+         * return if empty.
+         */
+        public bool IsEmpty()
         {
             if (this.openList.Count > 0)
             {
@@ -26,15 +38,24 @@ namespace SearchAlgorithmsLib
             }
             return true;
         }
-        protected State<T> popOpenList()
+        /*
+         * pop from the stack.
+         */
+        protected State<T> PopOpenList()
         {
             evaluatedNodes++;
             return openList.Pop();
         }
-        public virtual int getNumberOfNodesEvaluated()
+        /*
+         * get the number of nodes evaluated.
+         */
+        public virtual int GetNumberOfNodesEvaluated()
         {
             return evaluatedNodes;
         }
-        public abstract Solution<T> search(ISearchable<T> searchable);
+        /*
+         * abstract method- search algorithm.
+         */
+        public abstract Solution<T> Search(ISearchable<T> searchable);
     }
 }

@@ -16,64 +16,62 @@ namespace SearchAlgorithmsLib
         {
             this.state = state;
         }
-
+        /*
+         * ovveride the get hashcode method.
+         */
         public override int GetHashCode()
         {
             return String.Intern(state.ToString()).GetHashCode();
         }
-
+        /*
+         * overide the equals method.
+         */
         public bool Equals(State<T> s) // we overload Object's Equals method
         {
             return state.Equals(s.state);
         }
+        /*
+         * overide the equals method.
+         */
         public override bool Equals(object obj)
         {
             return Equals(obj as State<T>);
         }
+        /*
+         * Cost member.
+         */
         public float Cost
         {
             get;
             set;
         }
+        /*
+         * where we come from.
+         */
         public State<T> Parent
         {
             get;
             set;
         }
-        /// <summary>
-        /// Implements the operator ==.
-        /// </summary>
-        /// <param name="left">The left.</param>
-        /// <param name="right">The right.</param>
-        /// <returns>
-        /// The result of the operator.
-        /// </returns>
+        /*
+         * overide the equals method.
+         */
         public static bool operator ==(State<T> left, State<T> right)
         {
             return Equals(left, right);
         }
 
-        /// <summary>
-        /// Implements the operator !=.
-        /// </summary>
-        /// <param name="left">The left.</param>
-        /// <param name="right">The right.</param>
-        /// <returns>
-        /// The result of the operator.
-        /// </returns>
+        /*
+         * overide not equals operator.
+         */
         public static bool operator !=(State<T> left, State<T> right)
         {
             return !Equals(left, right);
         }
 
-        /// <summary>
-        /// Compares the current instance with another object of the same type and returns an integer that indicates whether the current instance precedes, follows, or occurs in the same position in the sort order as the other object.
-        /// </summary>
-        /// <param name="obj">An object to compare with this instance.</param>
-        /// <returns>
-        /// A value that indicates the relative order of the objects being compared. The return value has these meanings: Value Meaning Less than zero This instance precedes <paramref name="obj" /> in the sort order. Zero This instance occurs in the same position in the sort order as <paramref name="obj" />. Greater than zero This instance follows <paramref name="obj" /> in the sort order.
-        /// </returns>
-        /// <exception cref="System.ArgumentException"></exception>
+        /*
+         * overide compareTo method.
+         */
         public int CompareTo(object obj)
         {
             if (obj == null) return 1;
@@ -84,19 +82,29 @@ namespace SearchAlgorithmsLib
             else
                 throw new ArgumentException();
         }
-        //TODO change this position
-
-        public T getPosition()
+        /*
+         * get the position of the state.
+         */
+        public T GetPosition()
         {
             return this.state;
         }
+        /*
+         * overide the toString of the function.
+         */
         public override string ToString()
         {
             return state.ToString();
         }
+        /*
+         * inner class creates satets.
+         */
         public static class StatePool
         {
             private static Dictionary<T, State<T>> pool = new Dictionary<T, State<T>>();
+            /*
+             * get the instance of the state and if we dont have it creates him.
+             */
             public static State<T> GetState(T item)
             {
                 if (!pool.ContainsKey(item))
@@ -106,19 +114,26 @@ namespace SearchAlgorithmsLib
                 return pool[item];
             }
         }
+        /*
+         * static method that returns comperator.
+         */
         public static IComparer<State<T>> GetDefaultCostComparer()
         {
             return new DefaultCostComparer();
         }
+        /*
+         * private comperator of state.
+         */
         private class DefaultCostComparer : IComparer<State<T>>
         {
             public int Compare(State<T> x, State<T> y)
             {
-                if (x.Cost > y.Cost)
+                float hefresh = x.Cost - y.Cost;
+                if (hefresh > 0)
                 {
                     return 1;
                 }
-                if (x.Cost < y.Cost)
+                if (hefresh < 0)
                 {
                     return -1;
                 }

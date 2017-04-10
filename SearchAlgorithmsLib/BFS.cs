@@ -9,60 +9,49 @@ namespace SearchAlgorithmsLib
 {
     public class BFS<T> : PrioritySearcher<T>
     {
+        /*
+         * BFS c-tor that create cost comperator.
+         */
         public BFS() : base(State<T>.GetDefaultCostComparer()) { }
+        /*
+         * BFS c-tor that gets comperator.
+         */
         public BFS(IComparer<State<T>> comparer) : base(comparer) { }
-        private Solution<T> backTrace(State<T> state, State<T> end)
+
+        public override Solution<T> Search(ISearchable<T> searchable)
         {
-            Stack<State<T>> openStack = new Stack<State<T>>();
-            List<State<T>> openList = new List<State<T>>();
-            openStack.Push(state);
-            while ((state = state.Parent) != null && state != end)
-            {
-                openStack.Push(state);
-            }
-            while (openStack.Count > 0)
-            {
-                openList.Add(openStack.Pop());
-            }
-            return new Solution<T>(openList, this.getNumberOfNodesEvaluated());
-        }
-        public override Solution<T> search(ISearchable<T> searchable)
-        {
-            addToOpenList(searchable.getInitialState()); // inherited from Searcher
+            AddToOpenList(searchable.GetInitialState()); // inherited from Searcher
             HashSet<State<T>> closed = new HashSet<State<T>>();
             while (OpenListSize > 0)
             {
-                State<T> n = popOpenList(); // inherited from Searcher, removes the best state
+                State<T> n = PopOpenList(); // inherited from Searcher, removes the best state
                 closed.Add(n);
-                if (n.Equals(searchable.getGoalState()))
-                    return backTrace(n, searchable.getInitialState()); // private method, back traces through the parents
-                                                                       // calling the delegated method, returns a list of states with n as a parent
-                List<State<T>> succerssors = searchable.getAllPossibleStates(n);
+                if (n.Equals(searchable.GetGoalState()))
+                    return GiveSolution<T>.BackTrace(n, this.GetNumberOfNodesEvaluated()); // private method, back traces through the parents
+                
+                List<State<T>> succerssors = searchable.GetAllPossibleStates(n);
                 foreach (State<T> s in succerssors)
                 {
-                    if (!closed.Contains(s) && !openContains(s))
+                    if (!closed.Contains(s))
                     {
-                        addToOpenList(s);
-                        s.Parent = n;
-                    }
-                    else
-                    {
-                        float newDiraction = searchable.betterDiraction(n, s);
-                        float prevDiraction = s.Cost;
-                        if (newDiraction < prevDiraction)
+                        // If the current child state isn't in the open list.
+                        if (!this.OpenContains(s))
                         {
-                            if (!openContains(s))
+                            searchable.UpdateCameFrom(s, n);
+                            searchable.UpdateCost(s, n);
+                            this.AddToOpenList(s);
+                        }
+                        // If the current child state exists in the open list.
+                        else
+                        {
+                            bool checkBetterDirection = searchable.BetterDiraction(s, n);
+                            if (checkBetterDirection)
                             {
-                                addToOpenList(s);
-                                s.Parent = n;
-                            }
-                            else
-                            {
-                                updateItem(s);
-                                s.Parent = n;
+                                searchable.UpdateCameFrom(s, n);
+                                searchable.UpdateCost(s, n);
+                                UpdateItem(s);
                             }
                         }
-
                     }
                 }
             }

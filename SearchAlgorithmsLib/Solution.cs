@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace SearchAlgorithmsLib
 {
+    /*
+     * the solution class.
+     */
     public class Solution<T>
     {
         private List<State<T>> solutionList;
@@ -25,19 +28,19 @@ namespace SearchAlgorithmsLib
             this.numberOfStepst = this.solutionList.Count() - 1;
             this.numberOfStepsCalculate = number;
         }
-        public List<State<T>> getSolution()
+        public List<State<T>> GetSolution()
         {
             return solutionList;
         }
-        public void setSolution(List<State<T>> newSolution)
+        public void SetSolution(List<State<T>> newSolution)
         {
             this.solutionList = newSolution;
         }
         public bool Equals(Solution<T> solution) // we overload Object's Equals method
         {
-            return solutionList.Equals(solution.getSolution());
+            return solutionList.Equals(solution.GetSolution());
         }
-        public void printSolution()
+        public void PrintSolution()
         {
          //   Console.WriteLine(this.numberOfStepst);
             Console.WriteLine(this.numberOfStepsCalculate);

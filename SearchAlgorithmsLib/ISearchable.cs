@@ -7,9 +7,11 @@ namespace SearchAlgorithmsLib
 {
     public interface ISearchable<T>
     {
-        State<T> getInitialState();
-        State<T> getGoalState();
-        List<State<T>> getAllPossibleStates(State<T> s);
-        float betterDiraction(State<T> state, State<T> state2);
+        State<T> GetInitialState();
+        State<T> GetGoalState();
+        List<State<T>> GetAllPossibleStates(State<T> s);
+        bool BetterDiraction(State<T> state, State<T> state2);
+        void UpdateCost(State<T> state, State<T> state2);
+        void UpdateCameFrom(State<T> state, State<T> state2);
     }
 }
